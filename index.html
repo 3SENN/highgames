@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Highgames</title>
+    <meta name="description" content="A party board game on floating sky islands. One big screen, phones as controllers." />
+    <meta name="theme-color" content="#17111D" />
+    <link rel="icon" href="./src/assets/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./src/tv/tv.css" />
+  </head>
+  <body>
+    <canvas id="stage" aria-hidden="true"></canvas>
+    <div id="ui">
+      <div id="hud" aria-label="Players"></div>
+      <div id="live" hidden></div>
+      <div id="dice" hidden aria-live="polite"></div>
+      <div id="toasts" aria-live="polite"></div>
+      <div id="overlay"></div>
+      <div id="panel" hidden></div>
+      <div id="banner" hidden aria-live="assertive"></div>
+      <header id="topbar">
+        <div class="tb-left">
+          <span class="tb-brand">
+            <img class="tb-mark" src="./src/assets/icon.svg" alt="" width="28" height="28" />
+            <span class="tb-title">Highgames</span>
+          </span>
+          <span id="round" hidden></span>
+        </div>
+        <div class="tb-center"><span id="timer" hidden></span></div>
+        <div class="tb-right">
+          <span id="tb-clock"></span>
+        </div>
+      </header>
+      <footer id="promptbar">
+        <span class="pb-side"></span>
+        <p id="caption"></p>
+        <div id="prompts" class="pb-side"></div>
+      </footer>
+    </div>
+    <noscript>Highgames needs JavaScript to run.</noscript>
+    <script type="module" src="./src/tv/main.ts"></script>
+  </body>
+</html>

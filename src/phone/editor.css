@@ -1,0 +1,744 @@
+/* The companion editor, styled like Atelier's look editor (atelier companion-card/lookRing.css and card.css)
+   in its narrow layout, with Atelier's light-theme tokens and its interface font, Inter (synced into
+   public/fonts). Scoped to .customizer so the rest of the phone page keeps its own style. */
+
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../assets/fonts/InterVariable.woff2') format('woff2');
+}
+
+.customizer {
+  --bg-card: #fdfcfa;
+  --bg-raised: #ffffff;
+  --bg-subtle: #f8f7f4;
+  --bg-muted: #efede9;
+  --text-primary: #1c1a17;
+  --text-secondary: #66615a;
+  --text-tertiary: #8d877f;
+  --border-subtle: #ece9e4;
+  --border-default: #e3dfd9;
+  --border-strong: #cfc9c1;
+  --radius-md: 12px;
+  --radius-pill: 999px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --tooltip-bg: #1c1a17;
+  --tooltip-fg: #ffffff;
+  --hero-tint: #6a4bff;
+  --co-wash-top: color-mix(in srgb, var(--hero-tint) 20%, var(--bg-card));
+  --co-wash-mid: color-mix(in srgb, var(--hero-tint) 23%, var(--bg-card));
+  --co-floor: color-mix(in srgb, var(--text-primary) 9%, var(--co-wash-mid));
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: calc(100dvh - 60px);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-family: 'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  text-align: left;
+  -webkit-font-smoothing: antialiased;
+}
+
+.customizer button {
+  font: inherit;
+  color: inherit;
+  cursor: default;
+}
+
+.customizer :focus-visible {
+  outline: 2px solid var(--hero-tint);
+  outline-offset: 2px;
+}
+
+/* ---- the hero: the companion on a wash of its accent colour, with a flat floor ---- */
+
+.co-hero {
+  position: relative;
+  height: 42vh;
+  min-height: 250px;
+  overflow: hidden;
+  background: linear-gradient(to bottom, var(--co-wash-top) 0%, var(--co-wash-mid) 55%, var(--co-wash-top) 85%, var(--bg-card) 100%);
+}
+
+.co-hero__floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26%;
+  background: linear-gradient(to bottom, var(--co-floor), color-mix(in srgb, var(--co-floor) 40%, var(--bg-card)));
+}
+
+.co-hero__figure {
+  position: absolute;
+  inset: 44px 0 0;
+  width: 100%;
+  height: calc(100% - 44px);
+  touch-action: none;
+}
+
+/* ---- the tools pill (LookTools) ---- */
+
+.co-look__tools {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: max-content;
+  max-width: calc(100% - 20px);
+  height: 40px;
+  padding: 0 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+}
+
+.co-look__tool {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+}
+
+.co-look__tool svg {
+  width: 16px;
+  height: 16px;
+}
+
+.co-look__tool:disabled {
+  color: var(--text-tertiary);
+}
+
+.co-look__divider {
+  flex: none;
+  width: 1px;
+  height: 18px;
+  margin: 0 4px;
+  background: var(--border-subtle);
+}
+
+.co-look__style {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  gap: 5px;
+  height: 32px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  font-size: 13px !important;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.co-look__style svg {
+  width: 14px;
+  height: 14px;
+}
+
+.co-look__style:active:not(:disabled),
+.co-look__tool:active:not(:disabled) {
+  background: color-mix(in srgb, var(--text-primary) 11%, transparent);
+}
+
+/* The presets menu, under the pill. */
+.co-menu {
+  position: absolute;
+  right: 10px;
+  z-index: 2;
+  display: grid;
+  min-width: 220px;
+  max-height: 60%;
+  overflow: auto;
+  padding: 4px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.12), 0 1px 3px rgb(0 0 0 / 0.06);
+  animation: co-fade 150ms var(--ease-out) both;
+}
+
+.co-menu__item {
+  display: grid;
+  gap: 1px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  text-align: left;
+}
+
+.co-menu__item strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.co-menu__item small {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.co-menu__item:active {
+  background: color-mix(in srgb, var(--text-primary) 7%, transparent);
+}
+
+/* ---- the category bubbles (LookRing), in a row under the figure ---- */
+
+.co-ring {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px 4px;
+}
+
+.co-ring__bubble {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bg-card);
+  box-shadow: 0 0 0 1px var(--border-subtle), 0 2px 8px rgb(0 0 0 / 0.1), 0 1px 2px rgb(0 0 0 / 0.06);
+  animation: co-ring-in 350ms var(--ease-out) both;
+}
+
+.co-ring__bubble--selected {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--text-primary) 72%, transparent), 0 2px 8px rgb(0 0 0 / 0.12);
+}
+
+.co-ring__art {
+  width: 26px;
+  height: 26px;
+  color: color-mix(in srgb, #1d1a2b 82%, transparent);
+  pointer-events: none;
+}
+
+.co-ring__art--face {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.co-ring__art--face .co-face-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+/* The label chip above the selected bubble (a touch screen has no hover). */
+.co-ring__chip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  z-index: 1;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--tooltip-bg);
+  color: var(--tooltip-fg);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 2px);
+  transition: opacity 120ms var(--ease-out), transform 120ms var(--ease-out);
+  pointer-events: none;
+}
+
+.co-ring__bubble--selected .co-ring__chip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.co-ring-hint {
+  margin: 6px 16px 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ---- the option card and the slider card ---- */
+
+.co-ring-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 12px 14px;
+  animation: co-fade 150ms var(--ease-out) both;
+}
+
+.co-ring-card,
+.co-ring-sliders {
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  background: var(--bg-card);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.12), 0 1px 3px rgb(0 0 0 / 0.06);
+}
+
+.co-ring-card {
+  padding: 12px;
+}
+
+.co-ring-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.co-ring-card__head h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.co-ring-card__close {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.co-ring-card__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.co-ring-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: -3px;
+  padding: 3px;
+}
+
+.co-ring-section h5 {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Atelier's 37 px tiles, a little larger here for fingers. */
+.co-ring-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 44px);
+  gap: 6px;
+}
+
+.co-ring-palettes {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 44px;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 3px;
+  margin: -3px;
+  scrollbar-width: none;
+}
+
+.co-ring-tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bg-muted);
+  color: var(--text-secondary);
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+}
+
+.co-ring-tile:disabled {
+  opacity: 0.38;
+}
+
+/* The current tile: a thick ink ring and a check badge. */
+.co-ring-tile--current {
+  box-shadow: 0 0 0 2.5px var(--text-primary);
+}
+
+.co-ring-tile__check {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  color: var(--bg-card);
+  box-shadow: 0 0 0 1.5px var(--bg-card);
+}
+
+.co-ring-tile__check svg {
+  width: 10px;
+  height: 10px;
+  stroke-width: 3;
+}
+
+.co-ring-tile__none {
+  width: 18px;
+  height: 18px;
+}
+
+.co-ring-tile__still,
+.co-ring-tile__face {
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: center / cover no-repeat;
+  pointer-events: none;
+}
+
+.co-ring-tile__face .co-face-swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  box-shadow: none;
+}
+
+.co-ring-tile--swatch {
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+}
+
+.co-ring-tile--swatch.co-ring-tile--current,
+.co-ring-tile--palette.co-ring-tile--current,
+.co-ring-tile--custom.co-ring-tile--current {
+  box-shadow: 0 0 0 2.5px var(--text-primary);
+}
+
+.co-ring-tile--palette {
+  background: var(--palette);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+}
+
+.co-ring-tile--custom {
+  background: var(--swatch, conic-gradient(#f66, #fc5, #6d8, #5bf, #a7f, #f66));
+}
+
+.co-ring-tile--custom input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.co-ring-tile--custom > svg {
+  width: 16px;
+  height: 16px;
+  color: #fff;
+  filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.35));
+  pointer-events: none;
+}
+
+.co-ring-tints {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+}
+
+.co-ring-tints__tint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-secondary) !important;
+  font-size: 13px !important;
+  font-weight: 500;
+}
+
+.co-ring-tints__tint i {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--dot);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.14);
+}
+
+.co-ring-tints__tint[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--text-primary) 10%, transparent);
+  color: var(--text-primary) !important;
+}
+
+/* The face pieces drawn on the skin colour (FaceSwatch). */
+.co-face-swatch {
+  display: block;
+  width: 44px;
+  height: 24px;
+  flex: none;
+  border-radius: var(--radius-pill);
+  background-color: var(--swatch-skin);
+  background-repeat: no-repeat;
+  box-shadow: inset 0 0 0 1px var(--border-default);
+}
+
+.co-face-swatch--eyes {
+  background-size: 140% auto;
+  background-position: 50% 42%;
+}
+
+.co-face-swatch--brows {
+  background-size: 140% auto;
+  background-position: 50% 14%;
+}
+
+.co-face-swatch--mouth {
+  background-size: 200% auto;
+  background-position: 50% 88%;
+}
+
+/* ---- fine-tuning (AdjustSliders) ---- */
+
+.co-ring-sliders {
+  padding: 10px 12px;
+}
+
+.co-adjust {
+  display: grid;
+  gap: 12px;
+}
+
+.co-adjust__group {
+  display: grid;
+  gap: 8px;
+}
+
+.co-adjust__row {
+  display: grid;
+  grid-template-columns: minmax(96px, 38%) 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.co-adjust__label {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.co-adjust__slider {
+  --track: color-mix(in srgb, var(--text-primary) 12%, transparent);
+  --ink: var(--text-primary);
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.co-adjust__slider::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(to right, var(--ink) 0 var(--fill, 50%), var(--track) var(--fill, 50%) 100%);
+}
+
+.co-adjust__slider::-moz-range-track {
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(to right, var(--ink) 0 var(--fill, 50%), var(--track) var(--fill, 50%) 100%);
+}
+
+.co-adjust__slider::-webkit-slider-thumb {
+  width: 18px;
+  height: 18px;
+  margin-top: -7px;
+  border: 1px solid var(--border-default);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+  -webkit-appearance: none;
+  appearance: none;
+  transition: transform 120ms var(--ease-out);
+}
+
+.co-adjust__slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--border-default);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+}
+
+.co-adjust__slider:active::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+
+.co-adjust__reset {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  font-size: 12px !important;
+}
+
+.co-adjust__reset svg {
+  width: 13px;
+  height: 13px;
+}
+
+.co-adjust__reset:disabled {
+  color: var(--text-tertiary) !important;
+}
+
+/* ---- ready and start ---- */
+
+.co-footer {
+  position: sticky;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 10px 12px calc(env(safe-area-inset-bottom) + 10px);
+  border-top: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--bg-card) 94%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.co-footer__rounds {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.co-segmented {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  background: #fff;
+}
+
+.co-segmented button {
+  min-width: 44px;
+  height: 30px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  font-weight: 500;
+}
+
+.co-segmented button.on {
+  background: var(--text-primary);
+  color: #fff !important;
+}
+
+.co-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 46px;
+  padding: 0 16px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  font-size: 15px !important;
+  font-weight: 600;
+}
+
+.co-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.co-btn--done {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--hero-tint) 16%, #fff);
+}
+
+.co-btn--primary {
+  border-color: var(--text-primary);
+  background: var(--text-primary);
+  color: #fff !important;
+}
+
+.co-footer__note {
+  align-self: center;
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+@keyframes co-ring-in {
+  from {
+    opacity: 0;
+    scale: 0.82;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes co-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .co-ring__bubble,
+  .co-ring-panel,
+  .co-menu {
+    animation: none;
+  }
+}

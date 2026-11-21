@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Highgames controller</title>
+    <meta name="theme-color" content="#15111a" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Highgames" />
+    <!--
+      This page is served by Atelier's web server for the game (atelier.server), under an unguessable token, so every
+      address here is relative. Atelier serves its kit there too: three.js and the companion runtime come from kit 1.
+    -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./__atelier/kit/1/three/build/three.module.js",
+          "three/addons/": "./__atelier/kit/1/three/examples/jsm/",
+          "three/examples/jsm/": "./__atelier/kit/1/three/examples/jsm/",
+          "atelier-kit/": "./__atelier/kit/1/atelier-kit/"
+        }
+      }
+    </script>
+    <!-- Atelier's helper for served pages: one socket to the big screen that reconnects by itself. -->
+    <script src="__atelier/client.js" vite-ignore></script>
+    <link rel="icon" href="../assets/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../assets/icon.svg" />
+    <link rel="stylesheet" href="./phone.css" />
+  </head>
+  <body>
+    <header id="bar" hidden>
+      <span id="me-portrait"></span>
+      <span id="me-name"></span>
+      <span id="status" class="status" role="status"></span>
+    </header>
+    <main id="app"></main>
+    <div id="flash" hidden role="alert"></div>
+    <noscript>Highgames needs JavaScript to run.</noscript>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

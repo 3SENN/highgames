@@ -1,0 +1,27 @@
+{
+  "format": "atelier-pack",
+  "manifestVersion": 2,
+  "id": "highgames",
+  "name": "Highgames",
+  "version": "0.2.0",
+  "description": "A laid-back party game for one big screen and up to four phones: a board game on floating sky islands, a co-op house party, rhythm sessions and 84 minigames. Phones join by scanning a QR code; your companions fill the empty seats.",
+  "contributes": {
+    "apps": [
+      {
+        "id": "main",
+        "name": "Highgames",
+        "root": "app",
+        "entry": "index.html",
+        "build": "bundled",
+        "kit": 1,
+        "kind": "game",
+        "icon": "icon.svg",
+        "orientation": "landscape",
+        "cast": { "min": 0, "max": 4 }
+      }
+    ]
+  },
+  "permissions": {
+    "server": { "lan": true }
+  }
+}

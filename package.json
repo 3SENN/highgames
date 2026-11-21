@@ -1,0 +1,42 @@
+{
+  "name": "highgames",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Highgames: a laid-back party game on floating sky islands, as an Atelier game. One big screen, phones as controllers.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "dev": "node scripts/atelier/dev.mjs",
+    "build": "node scripts/atelier/build.mjs",
+    "start": "node scripts/atelier/emulator.mjs",
+    "validate": "node scripts/atelier/validate.mjs",
+    "package": "node scripts/atelier/package.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "node test/e2e/smoke.mjs",
+    "e2e:atelier": "node test/e2e/in-atelier.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint .",
+    "check": "npm run typecheck && npm run lint && npm test"
+  },
+  "dependencies": {
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/node": "^22.10.2",
+    "@types/three": "^0.186.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "playwright-core": "^1.65.0",
+    "qrcode": "^1.5.4",
+    "selfsigned": "^2.4.1",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
+    "vite": "^6.0.5",
+    "vitest": "^2.1.8",
+    "ws": "^8.18.0"
+  }
+}

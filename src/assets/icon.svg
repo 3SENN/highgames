@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#3A2748"/>
+      <stop offset="1" stop-color="#17111D"/>
+    </linearGradient>
+    <radialGradient id="lamp" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFC98A" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#FFC98A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="warm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFD9A6"/>
+      <stop offset="1" stop-color="#FF9A6B"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#night)"/>
+  <circle cx="32" cy="30" r="27" fill="url(#lamp)"/>
+  <!-- An H whose crossbar is a smile. -->
+  <path d="M20 16v32M44 16v32" stroke="url(#warm)" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <path d="M20 30q12 10 24 0" stroke="url(#warm)" stroke-width="7" stroke-linecap="round" fill="none"/>
+</svg>
