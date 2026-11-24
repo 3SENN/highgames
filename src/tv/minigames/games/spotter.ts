@@ -95,8 +95,8 @@ class NightSky implements View {
 
 export const minigame: Minigame = {
   id: 'spotter',
-  title: 'Spaced Out',
-  how: 'You were staring at one cloud for ages and now you have lost it. Your phone shows which one: find it on the big screen and tap its letter. Some of them look almost the same…',
+  title: 'Cloud Spotting',
+  how: 'You were watching one cloud drift by and now you have lost it. Your phone shows which one: find it on the big screen and tap its letter. Some of them look almost the same…',
   controller: 'secret',
   kind: 'ffa',
 

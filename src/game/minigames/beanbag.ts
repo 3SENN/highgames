@@ -1,4 +1,4 @@
-// Couch Lock: everyone is sunk deep into a giant squishy beanbag. Pump your phone to wiggle your way up while
+// Beanbag Breakout: everyone is sunk deep into a giant squishy beanbag. Pump your phone to wiggle your way up while
 // the beanbag slowly swallows you back down. First to pop out and stand up wins; the rest rank by how far out
 // they are when the time runs out.
 

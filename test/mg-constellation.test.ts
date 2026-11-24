@@ -18,7 +18,7 @@ function through(stars: readonly Pt[], step = 0.02, offset = { x: 0, y: 0 }): nu
 }
 
 describe('ceiling stars', () => {
-  it('makes readable constellations: inside the pad, spaced out, no crossings or near misses', () => {
+  it('makes readable constellations: inside the pad, well apart, no crossings or near misses', () => {
     for (let seed = 1; seed <= 200; seed++) {
       const rng = createRng(seed);
       const decor = decorStars(rng, 12);

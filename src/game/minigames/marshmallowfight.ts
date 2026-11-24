@@ -367,13 +367,13 @@ export interface CpuCamper {
   /** Marshmallows it already decided about. */
   seen: Set<number>;
   /** Seconds left staring at the fire. */
-  spaced: number;
+  daydream: number;
   /** It pressed last call (a throw needs a fresh press). */
   pressed: boolean;
 }
 
 export function newCpuCamper(): CpuCamper {
-  return { spotX: 0, spotZ: 0, rethink: 0, throwAt: 0.4, dodgeUntil: 0, dodgeX: 0, dodgeZ: 0, seen: new Set(), spaced: 0, pressed: false };
+  return { spotX: 0, spotZ: 0, rethink: 0, throwAt: 0.4, dodgeUntil: 0, dodgeX: 0, dodgeZ: 0, seen: new Set(), daydream: 0, pressed: false };
 }
 
 /** Places worth standing on a side: up front, in the gaps between chairs, and crouched behind them. */
@@ -405,11 +405,11 @@ export function cpuStick(c: CpuCamper, y: Yard, p: number, dt: number, skill: nu
   };
 
   // Zoning out by the fire now and then.
-  if (c.spaced > 0) {
-    c.spaced -= dt;
+  if (c.daydream > 0) {
+    c.daydream -= dt;
     return release(IDLE);
   }
-  if (rng() < (0.02 + (1 - s) * 0.16) * dt) c.spaced = 0.4 + rng() * (0.4 + (1 - s) * 0.9);
+  if (rng() < (0.02 + (1 - s) * 0.16) * dt) c.daydream = 0.4 + rng() * (0.4 + (1 - s) * 0.9);
 
   // Incoming! Sharp campers often sidestep; sleepy ones mostly don't notice.
   for (const m of y.mallows) {

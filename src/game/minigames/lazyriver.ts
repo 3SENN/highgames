@@ -397,11 +397,11 @@ export interface CpuPaddler {
   target: number;
   nextThink: number;
   /** Seconds left gazing at the sky. */
-  spaced: number;
+  daydream: number;
 }
 
 export function newCpuPaddler(d = 0): CpuPaddler {
-  return { target: d, nextThink: 0, spaced: 0 };
+  return { target: d, nextThink: 0, daydream: 0 };
 }
 
 /**
@@ -457,12 +457,12 @@ function gauss(rng: Rng): number {
 /** The tilt a computer player holds this frame. skill: 0 sleepy … 1 sharp. */
 export function cpuTilt(c: CpuPaddler, race: Race, i: number, skill: number, rng: Rng, dt: number): number {
   const f = race.floaties[i] as Floatie;
-  if (c.spaced > 0) {
-    c.spaced -= dt;
+  if (c.daydream > 0) {
+    c.daydream -= dt;
     return 0;
   }
   if (rng() < (0.015 + (1 - skill) * 0.11) * dt) {
-    c.spaced = 0.6 + rng() * (0.4 + (1 - skill) * 1.6);
+    c.daydream = 0.6 + rng() * (0.4 + (1 - skill) * 1.6);
     return 0;
   }
   if (race.time >= c.nextThink) {

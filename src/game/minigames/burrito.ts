@@ -91,12 +91,12 @@ export interface CpuSpinner {
   /** Seconds left of an over-eager burst. */
   burst: number;
   /** Seconds left of a daydream. */
-  spaced: number;
+  daydream: number;
   wobble: number;
 }
 
 export function newCpuSpinner(skill: number, rng: () => number): CpuSpinner {
-  return { pace: 0.48 + skill * 0.28 + (rng() - 0.5) * 0.06, burst: 0, spaced: 0, wobble: rng() * 10 };
+  return { pace: 0.48 + skill * 0.28 + (rng() - 0.5) * 0.06, burst: 0, daydream: 0, wobble: rng() * 10 };
 }
 
 /**
@@ -106,12 +106,12 @@ export function newCpuSpinner(skill: number, rng: () => number): CpuSpinner {
 export function cpuSpin(c: CpuSpinner, r: Roller, skill: number, rng: () => number, dt: number): number {
   c.wobble += dt * (2.2 + rng() * 0.6);
   const shake = Math.sin(c.wobble) * (0.025 + (1 - skill) * 0.07);
-  if (c.spaced > 0) {
-    c.spaced -= dt;
+  if (c.daydream > 0) {
+    c.daydream -= dt;
     return Math.max(0, 0.15 + shake);
   }
   if (rng() < (0.02 + (1 - skill) * 0.07) * dt) {
-    c.spaced = 0.8 + rng() * (0.6 + (1 - skill) * 1.4);
+    c.daydream = 0.8 + rng() * (0.6 + (1 - skill) * 1.4);
     return 0.15;
   }
   if (c.burst > 0) {

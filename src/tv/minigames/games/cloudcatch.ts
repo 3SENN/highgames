@@ -1,22 +1,22 @@
-// Munchie Catch on the TV: a lazy picnic in the garden at golden hour, where little clouds rain snacks. Everyone balances a bowl in
+// Cloud Catch on the TV: a lazy picnic in the garden at golden hour, where little clouds rain snacks. Everyone balances a bowl in
 // their colour on their head and shuffles left and right in their own lane to catch them.
 import * as THREE from 'three';
 import {
   type Bowl,
   type CpuBowl,
   type Drop,
-  MUNCHIE,
+  CATCH,
   type SnackKind,
   cpuStick,
   dropY,
   landsAt,
   makeDrops,
-  munchieScores,
+  catchScores,
   newBowl,
   newCpuBowl,
   resolveDrop,
   stepBowl,
-} from '../../../game/minigames/munchie';
+} from '../../../game/minigames/cloudcatch';
 import { type Companion, buildCompanion } from '../../../companion/kit';
 import type { Sfx } from '../../audio';
 import { type Env, backyard } from '../../render/env';
@@ -161,8 +161,8 @@ class Picnic implements View {
 
   constructor(seats: MinigameSeat[], companions: Companion[]) {
     const n = seats.length;
-    this.half = (n * MUNCHIE.lane) / 2;
-    this.env = backyard(this.scene, { mood: 'golden', w: n * MUNCHIE.lane + 10, d: 11, clear: { w: n * MUNCHIE.lane + 1.5, d: 4.5 }, seed: 4 });
+    this.half = (n * CATCH.lane) / 2;
+    this.env = backyard(this.scene, { mood: 'golden', w: n * CATCH.lane + 10, d: 11, clear: { w: n * CATCH.lane + 1.5, d: 4.5 }, seed: 4 });
     const rand = seeded(17);
     const set = new THREE.Group();
     // Lazy clouds far behind, catching the low sun.
@@ -171,18 +171,18 @@ class Picnic implements View {
     set.add(clouds);
 
     seats.forEach((s, i) => {
-      const x = (i - (n - 1) / 2) * MUNCHIE.lane;
+      const x = (i - (n - 1) / 2) * CATCH.lane;
       // A gingham picnic blanket marks the lane: the player's colour mixed down, with a trim in the full colour.
       const rugC = mix(s.color, P.cream, 0.4);
-      part(set, rbox(MUNCHIE.lane - 0.3, 0.04, 2.5, 0.015), rugC, x, 0.02, 0.05, { tex: 'gingham', texScale: 1.1, outline: false, shadow: false });
-      for (const dz of [-1.2, 1.3]) part(set, box(MUNCHIE.lane - 0.3, 0.045, 0.09), s.color, x, 0.022, dz, { outline: false, shadow: false });
+      part(set, rbox(CATCH.lane - 0.3, 0.04, 2.5, 0.015), rugC, x, 0.02, 0.05, { tex: 'gingham', texScale: 1.1, outline: false, shadow: false });
+      for (const dz of [-1.2, 1.3]) part(set, box(CATCH.lane - 0.3, 0.045, 0.09), s.color, x, 0.022, dz, { outline: false, shadow: false });
       const c = companions[i] as Companion;
       c.root.position.set(x, 0.04, 0);
       c.setBase('happy');
       this.scene.add(c.root);
       // The bowl, rim at catch height, resting on the head: glazed, in the player's colour.
       const bowl = new THREE.Group();
-      bowl.position.set(x, MUNCHIE.catchY, 0);
+      bowl.position.set(x, CATCH.catchY, 0);
       part(bowl, dome(BOWL_R), s.color, 0, 0, 0, { rx: Math.PI, sy: 0.55, gloss: 0.5 });
       part(bowl, torus(BOWL_R, 0.06), P.ceramic, 0, 0, 0, { rx: Math.PI / 2, gloss: 0.5 });
       part(bowl, torus(BOWL_R * 0.78, 0.022), mix(s.color, P.ink, 0.3), 0, -0.16, 0, { rx: Math.PI / 2, outline: false, shadow: false });
@@ -192,16 +192,16 @@ class Picnic implements View {
       this.scene.add(bowl);
       // A little snack cloud over the lane, with a hint of the player's colour.
       const sc = cloud(rand, 0.55, mix(P.cream, s.color, 0.14));
-      sc.position.set(x, MUNCHIE.top + 0.35, -0.3);
+      sc.position.set(x, CATCH.top + 0.35, -0.3);
       this.scene.add(sc);
       this.lanes.push({ x, companion: c, bowl, pile, cloud: sc, jiggle: 0, squash: 0, turn: 0, walking: false });
     });
     // Low wooden posts between the lanes and at both ends, with a rope slung between them.
     for (let k = 0; k <= n; k++) {
-      const px = (k - n / 2) * MUNCHIE.lane;
+      const px = (k - n / 2) * CATCH.lane;
       part(set, rbox(0.16, 0.9, 0.16, 0.04), P.oak, px, 0.45, -1.35, { tex: 'planks', texScale: 0.8 });
       part(set, rbox(0.22, 0.08, 0.22, 0.03), P.walnut, px, 0.93, -1.35, { outline: false });
-      if (k < n) set.add(props.stringLights(new THREE.Vector3(px, 0.86, -1.35), new THREE.Vector3(px + MUNCHIE.lane, 0.86, -1.35), { sag: 0.14, count: 5, colors: [P.ceramic], bulb: 0.035 }));
+      if (k < n) set.add(props.stringLights(new THREE.Vector3(px, 0.86, -1.35), new THREE.Vector3(px + CATCH.lane, 0.86, -1.35), { sag: 0.14, count: 5, colors: [P.ceramic], bulb: 0.035 }));
     }
     // A wicker picnic basket, a blanket with drinks and fruit, and a parasol for the mood.
     const bx = this.half + 1.5;
@@ -239,7 +239,7 @@ class Picnic implements View {
     this.fit.update(() => {
       const marks: Mark[] = [];
       for (const side of [-1, 1]) {
-        marks.push({ p: new THREE.Vector3(side * this.half, 0, 1.3) }, { p: new THREE.Vector3(side * this.half, MUNCHIE.top + 1.1, 0) });
+        marks.push({ p: new THREE.Vector3(side * this.half, 0, 1.3) }, { p: new THREE.Vector3(side * this.half, CATCH.top + 1.1, 0) });
       }
       return marks;
     });
@@ -250,7 +250,7 @@ class Picnic implements View {
     const l = this.lanes[lane];
     if (!l) return;
     const mesh = snackMesh(drop.kind);
-    mesh.position.set(l.x + drop.x, MUNCHIE.top, 0);
+    mesh.position.set(l.x + drop.x, CATCH.top, 0);
     mesh.rotation.z = Math.random() * Math.PI;
     this.scene.add(mesh);
     this.falling.push({ drop, lane, mesh, state: 'falling', t: 0, vx: 0, vy: 0 });
@@ -309,7 +309,7 @@ class Picnic implements View {
     const sprite = new THREE.Sprite(base.material.clone());
     sprite.scale.copy(base.scale);
     sprite.renderOrder = base.renderOrder;
-    sprite.position.set(l.bowl.position.x, MUNCHIE.catchY + 0.9, 0.4);
+    sprite.position.set(l.bowl.position.x, CATCH.catchY + 0.9, 0.4);
     this.scene.add(sprite);
     this.pops.push({ sprite, age: 0 });
   }
@@ -328,7 +328,7 @@ class Picnic implements View {
     l.turn += (THREE.MathUtils.clamp(b.vx * 0.09, -0.45, 0.45) - l.turn) * 0.2;
     l.companion.root.rotation.y = l.turn;
     const bob = walking ? Math.abs(Math.sin(t * 10)) * 0.05 : 0;
-    l.bowl.position.set(x, MUNCHIE.catchY + bob + Math.sin(l.jiggle * 18) * l.jiggle * 0.06, 0);
+    l.bowl.position.set(x, CATCH.catchY + bob + Math.sin(l.jiggle * 18) * l.jiggle * 0.06, 0);
     l.bowl.rotation.z = -b.vx * 0.03 + Math.sin(l.jiggle * 20) * l.jiggle * 0.15;
     const q = Math.sin(l.squash * Math.PI) * 0.12;
     l.bowl.scale.set(1 + q, 1 - q, 1 + q);
@@ -359,7 +359,7 @@ class Picnic implements View {
       l.companion.update(dt);
       l.jiggle = Math.max(0, l.jiggle - dt * 2.5);
       l.squash = Math.max(0, l.squash - dt * 4);
-      l.cloud.position.y = MUNCHIE.top + 0.35 + Math.sin(time * 1.3 + i * 1.9) * 0.07;
+      l.cloud.position.y = CATCH.top + 0.35 + Math.sin(time * 1.3 + i * 1.9) * 0.07;
     });
     for (const s of this.sparks) {
       if (s.life <= 0) continue;
@@ -405,8 +405,8 @@ class Picnic implements View {
 }
 
 export const minigame: Minigame = {
-  id: 'munchie',
-  title: 'Munchie Catch',
+  id: 'cloudcatch',
+  title: 'Cloud Catch',
   how: 'Snacks are raining down: slide left and right to catch them in your bowl, golden cookies are worth 3. Dodge the broccoli (it costs 2), and the most points wins!',
   controller: 'stick',
   kind: 'ffa',
@@ -472,10 +472,10 @@ export const minigame: Minigame = {
       }
       if (t - hudAt > 0.2) {
         hudAt = t;
-        ui.timer(MUNCHIE.duration - t);
+        ui.timer(CATCH.duration - t);
         ui.live(seats.map((s, i) => ({ name: s.name, color: s.color, thumb: s.thumb, value: `${bowls[i]?.score ?? 0} pts` })));
       }
-      return t >= MUNCHIE.duration;
+      return t >= CATCH.duration;
     });
     off();
     ui.timer(null);
@@ -486,7 +486,7 @@ export const minigame: Minigame = {
       if (b.score === best) view.lanes[i]?.companion.react('happy', 3);
     });
     return {
-      scores: munchieScores(bowls),
+      scores: catchScores(bowls),
       details: bowls.map((b) => [`${b.score} pts`, `${b.snacks} snack${b.snacks === 1 ? '' : 's'}`, ...(b.goldens ? [`${b.goldens} golden`] : []), ...(b.greens ? [`${b.greens} broccoli`] : [])].join(' · ')),
     };
   },

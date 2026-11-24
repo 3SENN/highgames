@@ -52,7 +52,7 @@ const BUILD: Record<BackdropTheme, (scene: THREE.Scene) => Layout> = {
     put(scene, props.guitar(), -2.6, 0, -3.1, 0.3);
     return { env, cam: [0.7, 2.5, 7.6], look: [0.3, 1.05, -1], slots: SOFA_SLOTS };
   },
-  // The Munchie Cup: the kitchen, where the snacks are.
+  // The Sky Cup: the kitchen, where the snacks are.
   kitchen: (scene) => {
     const env = kitchen(scene, { mood: 'evening', island: 2.6 });
     for (const lamp of env.lamps) lamp.intensity *= 0.6; // calmer than a kitchen you cook in

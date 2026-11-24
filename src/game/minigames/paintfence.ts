@@ -385,13 +385,13 @@ export interface CpuPainter {
   /** Notices the brush is dry at this time. */
   noticeAt: number;
   /** Seconds left admiring the clouds. */
-  spaced: number;
+  daydream: number;
   lastX: number;
   stuckFor: number;
 }
 
 export function newCpuPainter(): CpuPainter {
-  return { mode: 'paint', board: -1, dir: 1, rethink: 0, leaveAt: 1, noticeAt: Infinity, spaced: 0, lastX: 0, stuckFor: 0 };
+  return { mode: 'paint', board: -1, dir: 1, rethink: 0, leaveAt: 1, noticeAt: Infinity, daydream: 0, lastX: 0, stuckFor: 0 };
 }
 
 /** The stick a computer painter pushes this step. skill: 0 sleepy … 1 sharp. */
@@ -411,11 +411,11 @@ export function cpuStick(c: CpuPainter, y: Yard, p: number, dt: number, skill: n
     return { x: (dx / d) * m, y: -(dz / d) * m };
   };
 
-  if (c.spaced > 0) {
-    c.spaced -= dt;
+  if (c.daydream > 0) {
+    c.daydream -= dt;
     return IDLE;
   }
-  if (rng() < (0.03 + (1 - s) * 0.14) * dt) c.spaced = 0.3 + rng() * (0.3 + (1 - s) * 0.9);
+  if (rng() < (0.03 + (1 - s) * 0.14) * dt) c.daydream = 0.3 + rng() * (0.3 + (1 - s) * 0.9);
 
   // Out of paint: noticed straight away by a sharp painter, a little later by a sleepy one.
   if (c.mode === 'paint' && me.paint <= 0.001) {

@@ -201,14 +201,14 @@ export interface CpuHooper {
   pace: number;
   wobble: number;
   /** Seconds left of a daydream. */
-  spaced: number;
+  daydream: number;
   /** Seconds left of an over-eager burst. */
   burst: number;
 }
 
 export function newCpuHooper(skill: number, rng: Rng): CpuHooper {
   const s = Math.max(0, Math.min(1, skill));
-  return { pace: 0.62 + s * 0.12 + (rng() - 0.5) * 0.06, wobble: rng() * 10, spaced: 0, burst: 0 };
+  return { pace: 0.62 + s * 0.12 + (rng() - 0.5) * 0.06, wobble: rng() * 10, daydream: 0, burst: 0 };
 }
 
 /**
@@ -219,14 +219,14 @@ export function cpuHoop(c: CpuHooper, h: Hooper, skill: number, rng: Rng, dt: nu
   const s = Math.max(0, Math.min(1, skill));
   c.wobble += dt * (2.2 + rng() * 1.2);
   const shake = Math.sin(c.wobble) * (0.06 + (1 - s) * 0.08) + (rng() - 0.5) * (0.06 + (1 - s) * 0.06);
-  if (c.spaced > 0) {
-    c.spaced -= dt;
+  if (c.daydream > 0) {
+    c.daydream -= dt;
     // Notice the hoops sinking and pick the pace up again (the sharper, the sooner).
-    if (h.down === 0 && h.lift < 0.75 - s * 0.3 && rng() < (0.5 + s * 5) * dt) c.spaced = 0;
+    if (h.down === 0 && h.lift < 0.75 - s * 0.3 && rng() < (0.5 + s * 5) * dt) c.daydream = 0;
     return Math.max(0, 0.14 + shake);
   }
   if (h.down === 0 && rng() < (0.1 + (1 - s) * 0.12) * dt) {
-    c.spaced = 0.5 + rng() * (0.5 + (1 - s) * 1.5);
+    c.daydream = 0.5 + rng() * (0.5 + (1 - s) * 1.5);
     return 0.14;
   }
   if (c.burst > 0) {

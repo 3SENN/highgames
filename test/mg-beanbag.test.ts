@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { COUCH, couchDetail, couchScores, isComfy, newSinker, stepSinker, wiggle } from '../src/game/minigames/couchlock';
+import { COUCH, couchDetail, couchScores, isComfy, newSinker, stepSinker, wiggle } from '../src/game/minigames/beanbag';
 
 /** Wiggles `rate` times a second at `power` until popped out or the time is up. */
 function play(rate: number, power: number) {
@@ -16,7 +16,7 @@ function play(rate: number, power: number) {
   return s;
 }
 
-describe('couch lock', () => {
+describe('beanbag breakout', () => {
   it('pops out with steady, strong wiggling', () => {
     const s = play(4, 0.85);
     expect(s.finishedAt).not.toBeNull();

@@ -555,7 +555,7 @@ export interface CpuTidier {
   pickAt: number;
   rethink: number;
   /** Seconds left gazing at the ceiling. */
-  spaced: number;
+  daydream: number;
   /** Detour round furniture: until then, in this direction. */
   detourUntil: number;
   detourX: number;
@@ -568,7 +568,7 @@ export interface CpuTidier {
 }
 
 export function newCpuTidier(): CpuTidier {
-  return { target: -1, spotX: 0, spotZ: 0, aim: 0, readyAt: Infinity, giveUp: Infinity, pickAt: Infinity, rethink: 0, spaced: 0, detourUntil: 0, detourX: 0, detourZ: 0, lastX: 0, lastZ: 0, stuckFor: 0, pressed: false };
+  return { target: -1, spotX: 0, spotZ: 0, aim: 0, readyAt: Infinity, giveUp: Infinity, pickAt: Infinity, rethink: 0, daydream: 0, detourUntil: 0, detourX: 0, detourZ: 0, lastX: 0, lastZ: 0, stuckFor: 0, pressed: false };
 }
 
 /** The stick a computer tidier pushes this step. skill: 0 sleepy … 1 sharp. */
@@ -585,11 +585,11 @@ export function cpuStick(c: CpuTidier, r: Room, p: number, dt: number, skill: nu
   };
 
   // Gazing at the ceiling now and then.
-  if (c.spaced > 0) {
-    c.spaced -= dt;
+  if (c.daydream > 0) {
+    c.daydream -= dt;
     return out(IDLE);
   }
-  if (rng() < (0.03 + (1 - s) * 0.15) * dt) c.spaced = 0.3 + rng() * (0.4 + (1 - s) * 0.9);
+  if (rng() < (0.03 + (1 - s) * 0.15) * dt) c.daydream = 0.3 + rng() * (0.4 + (1 - s) * 0.9);
 
   // Noticing when it's stuck on a corner of the furniture.
   const moved = Math.hypot(me.x - c.lastX, me.z - c.lastZ);

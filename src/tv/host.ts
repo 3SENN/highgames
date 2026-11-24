@@ -29,7 +29,7 @@ export interface HostDeps {
   options: { demo: boolean; rounds: number | null; only: string | null };
 }
 
-/** A silly twist on a minigame (Spaced-Out Challenges). */
+/** A silly twist on a minigame (Topsy-Turvy Challenges). */
 export type Twist = 'sharp' | 'slowmo' | 'flipped' | 'mirror';
 
 export const TWISTS: Record<Twist, { label: string; text: string }> = {

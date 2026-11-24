@@ -56,7 +56,7 @@ export const MODES: readonly ModeDef[] = [
   },
   {
     id: 'cup',
-    title: 'Munchie Cup',
+    title: 'Sky Cup',
     sub: 'Five random minigames, points for every place.',
     tag: 'Minigames',
     icon: '🏆',
@@ -96,7 +96,7 @@ export const MODES: readonly ModeDef[] = [
   },
   {
     id: 'challenges',
-    title: 'Spaced-Out Challenges',
+    title: 'Topsy-Turvy Challenges',
     sub: 'Every minigame with a twist. Clear them all and keep your record.',
     tag: 'Solo',
     icon: '🌀',

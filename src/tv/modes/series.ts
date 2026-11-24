@@ -1,5 +1,5 @@
-// Modes made of minigames played back to back or picked from a list: Munchie Cup, Lo-Fi Session, Night Owl
-// Marathon, Free Play, Coffee Table and Spaced-Out Challenges.
+// Modes made of minigames played back to back or picked from a list: Sky Cup, Lo-Fi Session, Night Owl
+// Marathon, Free Play, Coffee Table and Topsy-Turvy Challenges.
 import { ranks } from '../../game/rules';
 import { shuffle } from '../../game/rng';
 import { type Host, TWISTS, type Twist } from '../host';
@@ -120,7 +120,7 @@ export async function runCup(host: Host): Promise<void> {
   const pool = minigamesOfKind('ffa', '2v2', '1v3');
   const games = shuffle(host.rng, pool.length ? pool : [...MINIGAMES]).slice(0, 5);
   showBackdrop(host, 'kitchen');
-  await finishSeries(host, 'Munchie Cup', await playSeries(host, games, 'kitchen'));
+  await finishSeries(host, 'Sky Cup', await playSeries(host, games, 'kitchen'));
 }
 
 export async function runLofi(host: Host): Promise<void> {
@@ -255,7 +255,7 @@ export async function runCoffeeTable(host: Host): Promise<void> {
   }
 }
 
-// ------------------------------------------------------------------ Spaced-Out Challenges
+// ------------------------------------------------------------------ Topsy-Turvy Challenges
 
 interface Challenge {
   game: Minigame;
@@ -297,9 +297,9 @@ const PICKED: Record<string, Twist> = {
   glider: 'mirror',
   spotter: 'flipped',
   giggle: 'sharp',
-  munchie: 'mirror',
+  cloudcatch: 'mirror',
   brainfreeze: 'slowmo',
-  couchlock: 'sharp',
+  beanbag: 'sharp',
   keys: 'flipped',
   laundryfold: 'sharp', // mirror world would flip its fold arrows
 };
@@ -333,7 +333,7 @@ export async function runChallenges(host: Host): Promise<void> {
     const cleared = new Set(progress[name] ?? []);
     const byGame = new Map(challenges.map((c) => [c.game, c] as const));
     const game = await pickGame(host, {
-      kicker: `Spaced-Out Challenges · ${name}: ${challenges.filter((c) => cleared.has(keyOf(c))).length} of ${challenges.length} cleared`,
+      kicker: `Topsy-Turvy Challenges · ${name}: ${challenges.filter((c) => cleared.has(keyOf(c))).length} of ${challenges.length} cleared`,
       games: challenges.map((c) => c.game),
       item: (g) => {
         const c = byGame.get(g) as Challenge;

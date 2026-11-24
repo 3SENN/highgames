@@ -145,11 +145,11 @@ export function bubbleScores(poppers: readonly Popper[]): number[] {
 /** A computer player's thumb: when it presses next, and whether it's staring into space. */
 export interface CpuThumb {
   nextAt: number;
-  spaced: number;
+  daydream: number;
 }
 
 export function newCpuThumb(): CpuThumb {
-  return { nextAt: 0.4, spaced: 0 };
+  return { nextAt: 0.4, daydream: 0 };
 }
 
 /** Presses a second at full attention. skill: 0 sleepy … 1 sharp. */
@@ -162,13 +162,13 @@ export function cpuRate(skill: number): number {
  * for the golden bubbles first), now and then misses, and sometimes zones out for a moment.
  */
 export function cpuPress(c: CpuThumb, p: Popper, t: number, dt: number, skill: number, rng: Rng): { x: number; y: number } | null {
-  if (c.spaced > 0) {
-    c.spaced -= dt;
-    if (c.spaced <= 0) c.nextAt = t + 0.2;
+  if (c.daydream > 0) {
+    c.daydream -= dt;
+    if (c.daydream <= 0) c.nextAt = t + 0.2;
     return null;
   }
   if (rng() < (0.05 + (1 - skill) * 0.22) * dt) {
-    c.spaced = 0.4 + rng() * (0.3 + (1 - skill) * 0.9);
+    c.daydream = 0.4 + rng() * (0.3 + (1 - skill) * 0.9);
     return null;
   }
   if (t < c.nextAt || t < p.readyAt) return null;

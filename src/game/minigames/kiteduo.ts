@@ -356,11 +356,11 @@ export interface CpuKite {
   /** When the reeler may pump next. */
   pumpAt: number;
   /** Seconds left gazing at the sunset. */
-  spaced: number;
+  daydream: number;
 }
 
 export function newCpuKite(): CpuKite {
-  return { target: null, rethink: 0, errX: 0, errY: 0, pumpAt: 0.2, spaced: 0 };
+  return { target: null, rethink: 0, errX: 0, errY: 0, pumpAt: 0.2, daydream: 0 };
 }
 
 /**
@@ -416,11 +416,11 @@ export function cpuReelGoal(sky: Sky, k: Kite): number {
  */
 export function cpuTilt(c: CpuKite, sky: Sky, k: Kite, dt: number, skill: number, rng: Rng, heightCost = 1): Tilt {
   const s = Math.max(0, Math.min(1, skill));
-  if (c.spaced > 0) {
-    c.spaced -= dt;
+  if (c.daydream > 0) {
+    c.daydream -= dt;
     return { x: 0, y: 0 };
   }
-  if (rng() < (0.02 + (1 - s) * 0.12) * dt) c.spaced = 0.4 + rng() * (0.4 + (1 - s) * 1.0);
+  if (rng() < (0.02 + (1 - s) * 0.12) * dt) c.daydream = 0.4 + rng() * (0.4 + (1 - s) * 1.0);
   const t = sky.time;
   const current = c.target === null ? undefined : sky.balloons[c.target];
   if (t >= c.rethink || !current || current.taken !== null || current.until <= t) {
@@ -448,7 +448,7 @@ export function cpuTilt(c: CpuKite, sky: Sky, k: Kite, dt: number, skill: number
 export function cpuPump(c: CpuKite, k: Kite, goalY: number, t: number, skill: number, rng: Rng): number | null {
   const s = Math.max(0, Math.min(1, skill));
   if (k.tangled > 0 || t < c.pumpAt) return null;
-  if (c.spaced > 0) return null;
+  if (c.daydream > 0) return null;
   const want = clamp((KITE.sink + (goalY - k.y) * 1.3 - k.vy * 0.3) / KITE.climb, 0, 1);
   if (k.lift >= want - 0.03) return null;
   if (rng() < 0.01 + (1 - s) * 0.07) {

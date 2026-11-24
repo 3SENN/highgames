@@ -1,7 +1,7 @@
-// Couch Lock on the TV: four giant beanbags in a cosy lounge at dusk. Everyone is sunk in up to the ears;
+// Beanbag Breakout on the TV: four giant beanbags in a cosy lounge at dusk. Everyone is sunk in up to the ears;
 // pumping wiggles you up and out while the beanbag slowly swallows you back down.
 import * as THREE from 'three';
-import { COUCH, couchDetail, couchScores, isComfy, newSinker, stepSinker, wiggle } from '../../../game/minigames/couchlock';
+import { COUCH, couchDetail, couchScores, isComfy, newSinker, stepSinker, wiggle } from '../../../game/minigames/beanbag';
 import { type Companion, buildCompanion } from '../../../companion/kit';
 import type { Sfx } from '../../audio';
 import { type Env, livingRoom } from '../../render/env';
@@ -268,8 +268,8 @@ class LoungeView implements View {
 }
 
 export const minigame: Minigame = {
-  id: 'couchlock',
-  title: 'Couch Lock',
+  id: 'beanbag',
+  title: 'Beanbag Breakout',
   how: 'You sank way too deep into a giant beanbag. Pump your phone to wiggle up and out while it slowly swallows you back: first one standing wins!',
   controller: 'pump',
   kind: 'ffa',
@@ -318,7 +318,7 @@ export const minigame: Minigame = {
           if (t < (cpuNapUntil[i] ?? 0)) {
             cpuNext[i] = cpuNapUntil[i] ?? t;
           } else if (rng() < (1 - sk) * 0.035) {
-            // Spaced out for a moment. It happens.
+            // Lost in thought for a moment. It happens.
             cpuNapUntil[i] = t + 1.2 + rng() * 1.6;
           } else {
             doWiggle(i, 0.55 + sk * 0.3 + rng() * 0.1);

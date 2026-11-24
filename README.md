@@ -5,6 +5,8 @@ A laid-back party game for 1 to 4 players on floating sky islands, made as an **
 as the controller: scan the QR code and you're in. Empty seats are played by computer players: first your own Atelier
 companions, then Atelier's preset companions.
 
+The *high* in Highgames is sky-high: every game takes place on little islands floating above the clouds.
+
 Everyone plays as their own **Atelier companion**, drawn by the Atelier kit exactly as in Atelier, and **the phone works
 differently in every minigame**: sometimes it's a button, sometimes you pump it, tilt it, hold it perfectly still, nod
 along to a beat or keep a secret on it.
@@ -48,12 +50,12 @@ Keys on the big screen: **Enter** starts or picks, **arrows** move around menus,
 | **Tag Team Takeout** 🛋️ | Snack Run in two teams of two, each team sharing one couch. One of you rolls, the other makes the calls (paths, the corner store, orders), and you swap every turn. Team minigames come up more often. |
 | **Don't Kill the Vibe** 🌙 | Co-op. Everyone keeps one house party going from 10 PM until sunrise. Every hour something happens, the group votes which room to go to, and that room's co-op minigame lifts the vibe as much as you pull it off. Your best night is remembered. |
 | **Lo-Fi Session** 🎧 | The rhythm games back to back: nod, tap and strum with the beat. |
-| **Munchie Cup** 🏆 | Five random minigames (free-for-all, 2 vs 2 and 1 vs 3), points for every place. |
+| **Sky Cup** 🏆 | Five random minigames (free-for-all, 2 vs 2 and 1 vs 3), points for every place. |
 | **Cushion Claim** 🟪 | A living-room floor of 5×5 cushions, everyone starting in a corner. After each minigame you claim cushions by place (3 for first, 2 for second, 1 for third) on your phone: a free cushion next to yours costs 1, a rival's costs 2, and a small pocket you surround is yours. Most cushions after six rounds wins. |
 | **Night Owl Marathon** 🦉 | Five games in a row, points for every place, and a Hall of Fame on this TV: the best marathons ever played on this couch. |
 | **Free Play** 🎲 | Pick a category, then any minigame, as often as you like. |
 | **Coffee Table** 📱 | The table games: lay your phones flat on the table, their screens are the playfield and the TV keeps score. |
-| **Spaced-Out Challenges** 🌀 | Every minigame with a twist: the screen upside down, mirrored, in slow motion, or against wide-awake computer players. Win it (on your own, with your partner, or 80% together in co-op) to clear it. Progress is kept per host name on this computer. |
+| **Topsy-Turvy Challenges** 🌀 | Every minigame with a twist: the screen upside down, mirrored, in slow motion, or against wide-awake computer players. Win it (on your own, with your partner, or 80% together in co-op) to clear it. Progress is kept per host name on this computer. |
 
 ### On the board (Snack Run and Tag Team Takeout)
 
@@ -61,7 +63,7 @@ Keys on the big screen: **Enter** starts or picks, **arrows** move around menus,
 |---|---|
 | Blue **+3** | Gain 3 coins |
 | Purple **−3** | A bummer: lose 3 coins (a Hoodie shrugs it off) |
-| Yellow **?** | Something happens: couch-cushion coins, a big tipper, a seagull, zoning out into someone else's spot… |
+| Yellow **?** | Something happens: couch-cushion coins, a big tipper, a seagull, a gust of wind that swaps two players… |
 | Pink bag | The corner store: Energy Drink (+3 to a roll), Double Shot (roll two dice), Hoodie |
 | Teal wind | A breeze carries you 2 spaces onward |
 | Orange envelope | The Snack Shack: pick up an order (rush orders cost 5 coins and pay 2 smiles) |
@@ -80,11 +82,11 @@ Eighteen minigames, and in each one the phone is something else:
 | **Thunder Snap** | everyone | a button: watch the TV and tap the moment lightning strikes. Reaction times are corrected for each phone's Wi-Fi delay. |
 | **Balloon Pump** | everyone | a pump: move it up and down to fill your balloon, and watch the gauge *on your phone*, because past the red line it bursts. |
 | **Donut Dash** | everyone | a paper plane: hold it flat and tilt to fly through floating donuts. |
-| **Spaced Out** | everyone | a secret: it shows the cloud you lost, find it among look-alikes on the TV and tap its letter. |
+| **Cloud Spotting** | everyone | a secret: it shows the cloud you lost, find it among look-alikes on the TV and tap its letter. |
 | **Giggle Fit** | everyone | a straight face: a very serious documentary keeps going silly, and if your phone wobbles you crack up. A composure bar on the phone warns you. |
-| **Munchie Catch** | everyone | a joystick: slide your bowl under the falling snacks and dodge the broccoli. |
+| **Cloud Catch** | everyone | a joystick: slide your bowl under the falling snacks and dodge the broccoli. |
 | **Brain Freeze** | everyone | a straw: hold to slurp your slushie, let go before the freeze meter tops out. |
-| **Couch Lock** | everyone | a pump again, but now you're wiggling out of a beanbag that keeps swallowing you back. Mashing doesn't help. |
+| **Beanbag Breakout** | everyone | a pump again, but now you're wiggling out of a beanbag that keeps swallowing you back. Mashing doesn't help. |
 | **Where Are My Keys?** | everyone | six spot buttons coloured like the labels on the TV: remember where your keys went while the room gets messier and the cat moves things. |
 | **Last Slice** | 1 vs 3 | a joystick and a **Nope!** button: three snackers sneak up on the last slice, one guard bumps them away. |
 | **Pillow Fort** | 2 vs 2 | one big Pillow! button you take turns on with your partner. Rushing makes the fort wobble. |
@@ -96,10 +98,10 @@ Eighteen minigames, and in each one the phone is something else:
 | **Snack Stack** | rhythm | a drum: tap on the beat to stack snacks on your plate. |
 | **Mellow Strum** | rhythm | a ukulele: strum as each pick reaches the sound hole, and rest where there is none. |
 
-"Everyone" games come up after board rounds and in the Munchie Cup; 1 vs 3 and 2 vs 2 games now and
+"Everyone" games come up after board rounds and in the Sky Cup; 1 vs 3 and 2 vs 2 games now and
 then on the board (the leader is the one in 1 vs 3) and often in Tag Team Takeout; co-op games are
 the rooms in Don't Kill the Vibe; rhythm games make up the Lo-Fi Session. All of them are in Free
-Play. The playtest ids are the file names in `src/tv/minigames/games/` (`?game=couchlock`).
+Play. The playtest ids are the file names in `src/tv/minigames/games/` (`?game=beanbag`).
 
 Phones without motion sensors get a touch fallback wherever motion is used (tap to pump, drag to
 steer, tap to nod).
@@ -140,7 +142,7 @@ effects quality; by default it steps down by itself when the frame rate drops). 
 `bedroom`, `backyard`, `beach`, `rooftop`, `props`, `textures`, with `&mood=day|golden|evening|night|neon`) previews
 the environment and prop library.
 
-The browser test picks a mode with `E2E_MODE` (0 = Snack Run … 9 = Spaced-Out Challenges, in menu order) and a
+The browser test picks a mode with `E2E_MODE` (0 = Snack Run … 9 = Topsy-Turvy Challenges, in menu order) and a
 minigame with `E2E_GAME=<id>`, for example `E2E_MODE=2 npm run e2e`. Screenshots land in `test-results/e2e/`
 (`E2E_OUT` names the folder). More options:
 - `E2E_GPU=1` renders on the graphics card (faster, and the real look); the default is software rendering.

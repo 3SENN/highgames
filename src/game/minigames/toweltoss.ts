@@ -464,12 +464,12 @@ export interface CpuHolder {
   /** The partner press it is answering (so it answers each one once). */
   answering: number | null;
   /** Seconds left watching the sunset. */
-  spaced: number;
+  daydream: number;
   pressed: boolean;
 }
 
 export function newCpuHolder(): CpuHolder {
-  return { chasing: -1, guessX: 0, guessZ: 0, moveAt: 0, seen: new Map(), homeX: 0, aim: 0, rethink: 0, pressAt: Infinity, answering: null, spaced: 0, pressed: false };
+  return { chasing: -1, guessX: 0, guessZ: 0, moveAt: 0, seen: new Map(), homeX: 0, aim: 0, rethink: 0, pressAt: Infinity, answering: null, daydream: 0, pressed: false };
 }
 
 /** Roughly bell-shaped noise with a standard deviation of about 1. */
@@ -510,11 +510,11 @@ export function cpuStick(c: CpuHolder, d: Deck, p: number, dt: number, skill: nu
     return { x: (dx / dist) * k, y: -(dz / dist) * k, a: false };
   };
 
-  if (c.spaced > 0) {
-    c.spaced -= dt;
+  if (c.daydream > 0) {
+    c.daydream -= dt;
     return out(IDLE);
   }
-  if (rng() < (0.02 + (1 - s) * 0.1) * dt) c.spaced = 0.3 + rng() * (0.3 + (1 - s) * 0.8);
+  if (rng() < (0.02 + (1 - s) * 0.1) * dt) c.daydream = 0.3 + rng() * (0.3 + (1 - s) * 0.8);
 
   // Incoming: the soonest balloon coming down on our side.
   let threat: Balloon | undefined;

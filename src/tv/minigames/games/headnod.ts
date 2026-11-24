@@ -115,7 +115,7 @@ class CouchView implements View {
       set.add(props.stringLights(new THREE.Vector3(x0, 6.55, wall + 0.08), new THREE.Vector3(x0 + (ROOM_W - 0.6) / swags, 6.55, wall + 0.08), { sag: 0.24, count: 9, bulb: 0.06 }));
     }
 
-    // A rug and the coffee table, with the evening's munchies.
+    // A rug and the coffee table, with the evening's snacks.
     place(set, props.rug({ w: Math.max(9, n * SPACING + 1.2), d: 3.8, color: P.terracotta }), 0, 0, 1.55);
     const tableY = 0.42 * S;
     place(set, props.coffeeTable({ w: 2.9, d: 0.95, color: P.walnut }), 0, 0, 1.75, 0, S);

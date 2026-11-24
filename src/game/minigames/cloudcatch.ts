@@ -1,9 +1,9 @@
-// Munchie Catch: snacks rain down and every player slides a bowl left and right in their own lane to catch them.
+// Cloud Catch: snacks rain down and every player slides a bowl left and right in their own lane to catch them.
 // Chips, cookies, donuts and pretzels are 1 point, a golden cookie 3; catching broccoli costs 2.
 // Every lane gets the very same snacks at the same moments, so it comes down to who catches best.
 import type { Rng } from '../rng';
 
-export const MUNCHIE = {
+export const CATCH = {
   duration: 30, // seconds
   lane: 3.4, // width of each player's lane
   reach: 1.35, // the bowl's centre stays within this distance of the lane's centre
@@ -40,16 +40,16 @@ export function makeDrops(rng: Rng): Drop[] {
   const drops: Drop[] = [];
   let at = 0.6;
   let lastX = 0;
-  while (at < MUNCHIE.duration - MUNCHIE.lastDrop) {
-    const k = at / MUNCHIE.duration;
+  while (at < CATCH.duration - CATCH.lastDrop) {
+    const k = at / CATCH.duration;
     const r = rng();
-    const kind: SnackKind = r < MUNCHIE.golden ? 'golden' : r < MUNCHIE.golden + MUNCHIE.broccoli ? 'broccoli' : (SNACKS[Math.floor(rng() * SNACKS.length)] ?? 'chip');
+    const kind: SnackKind = r < CATCH.golden ? 'golden' : r < CATCH.golden + CATCH.broccoli ? 'broccoli' : (SNACKS[Math.floor(rng() * SNACKS.length)] ?? 'chip');
     // Mostly a fair hop from the last one; now and then a long dash across the lane.
-    let x = rng() < 0.4 ? (rng() * 2 - 1) * MUNCHIE.reach : lastX + (rng() * 2 - 1) * 1.6;
-    x = Math.max(-MUNCHIE.reach, Math.min(MUNCHIE.reach, x));
-    drops.push({ at, x, kind, speed: MUNCHIE.fall[0] + (MUNCHIE.fall[1] - MUNCHIE.fall[0]) * k });
+    let x = rng() < 0.4 ? (rng() * 2 - 1) * CATCH.reach : lastX + (rng() * 2 - 1) * 1.6;
+    x = Math.max(-CATCH.reach, Math.min(CATCH.reach, x));
+    drops.push({ at, x, kind, speed: CATCH.fall[0] + (CATCH.fall[1] - CATCH.fall[0]) * k });
     lastX = x;
-    const gap = MUNCHIE.every[0] + (MUNCHIE.every[1] - MUNCHIE.every[0]) * k;
+    const gap = CATCH.every[0] + (CATCH.every[1] - CATCH.every[0]) * k;
     at += gap * (0.7 + rng() * 0.6);
   }
   return drops;
@@ -57,12 +57,12 @@ export function makeDrops(rng: Rng): Drop[] {
 
 /** Height of a drop at time t (from the top down; it keeps falling past the bowl). */
 export function dropY(d: Drop, t: number): number {
-  return MUNCHIE.top - d.speed * (t - d.at);
+  return CATCH.top - d.speed * (t - d.at);
 }
 
 /** When a drop passes the bowl's rim. */
 export function landsAt(d: Drop): number {
-  return d.at + (MUNCHIE.top - MUNCHIE.catchY) / d.speed;
+  return d.at + (CATCH.top - CATCH.catchY) / d.speed;
 }
 
 export interface Bowl {
@@ -83,19 +83,19 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v
 
 /** Slides the bowl with the stick (-1 … 1), easing into and out of its speed and stopping at the lane's edges. */
 export function stepBowl(b: Bowl, stick: number, dt: number): void {
-  const s = Math.abs(stick) < MUNCHIE.deadzone ? 0 : clamp(stick, -1, 1);
-  const want = s * MUNCHIE.speed;
-  const step = MUNCHIE.accel * dt;
+  const s = Math.abs(stick) < CATCH.deadzone ? 0 : clamp(stick, -1, 1);
+  const want = s * CATCH.speed;
+  const step = CATCH.accel * dt;
   b.vx = b.vx < want ? Math.min(want, b.vx + step) : Math.max(want, b.vx - step);
   b.x += b.vx * dt;
-  if (b.x > MUNCHIE.reach || b.x < -MUNCHIE.reach) {
-    b.x = clamp(b.x, -MUNCHIE.reach, MUNCHIE.reach);
+  if (b.x > CATCH.reach || b.x < -CATCH.reach) {
+    b.x = clamp(b.x, -CATCH.reach, CATCH.reach);
     b.vx = 0;
   }
 }
 
 export function catches(bowlX: number, d: Drop): boolean {
-  return Math.abs(bowlX - d.x) <= MUNCHIE.catchR;
+  return Math.abs(bowlX - d.x) <= CATCH.catchR;
 }
 
 /** Checks one drop against one bowl as it passes the rim. Returns the points it was worth (0 when missed). */
@@ -109,7 +109,7 @@ export function resolveDrop(b: Bowl, d: Drop): number {
   return points;
 }
 
-export function munchieScores(bowls: readonly Bowl[]): number[] {
+export function catchScores(bowls: readonly Bowl[]): number[] {
   return bowls.map((b) => b.score);
 }
 
@@ -124,25 +124,25 @@ export function cpuAim(bowlX: number, drops: readonly Drop[], t: number, skill: 
   const notice = 0.1 + (1 - skill) * 0.35; // a snack has to fall a moment before it's spotted
   const falling = drops.filter((d) => d.at + notice <= t && landsAt(d) >= t && landsAt(d) <= t + ahead).sort((a, b) => landsAt(a) - landsAt(b));
   const greens = falling.filter((d) => d.kind === 'broccoli');
-  const nearGreen = (x: number, when: number) => greens.some((g) => Math.abs(landsAt(g) - when) < 0.35 && Math.abs(g.x - x) < MUNCHIE.catchR + 0.15);
+  const nearGreen = (x: number, when: number) => greens.some((g) => Math.abs(landsAt(g) - when) < 0.35 && Math.abs(g.x - x) < CATCH.catchR + 0.15);
   let target = bowlX;
   for (const d of falling) {
     if (d.kind === 'broccoli') continue;
     const left = landsAt(d) - t;
-    if (Math.abs(d.x - bowlX) > MUNCHIE.speed * 0.8 * left + MUNCHIE.catchR) continue;
+    if (Math.abs(d.x - bowlX) > CATCH.speed * 0.8 * left + CATCH.catchR) continue;
     if (nearGreen(d.x, landsAt(d))) continue;
     target = d.x;
     break;
   }
   // Broccoli about to land in the bowl (or where the bowl is headed): step aside.
   const dodge = 0.3 + skill * 0.3;
-  const danger = greens.find((g) => landsAt(g) - t < dodge && (Math.abs(g.x - bowlX) < MUNCHIE.catchR + 0.2 || Math.abs(g.x - target) < MUNCHIE.catchR + 0.2));
+  const danger = greens.find((g) => landsAt(g) - t < dodge && (Math.abs(g.x - bowlX) < CATCH.catchR + 0.2 || Math.abs(g.x - target) < CATCH.catchR + 0.2));
   if (danger) {
     const side = bowlX === danger.x ? (danger.x > 0 ? -1 : 1) : Math.sign(bowlX - danger.x);
-    target = danger.x + side * (MUNCHIE.catchR + 0.55);
-    if (Math.abs(target) > MUNCHIE.reach) target = danger.x - side * (MUNCHIE.catchR + 0.55);
+    target = danger.x + side * (CATCH.catchR + 0.55);
+    if (Math.abs(target) > CATCH.reach) target = danger.x - side * (CATCH.catchR + 0.55);
   }
-  return clamp(target, -MUNCHIE.reach, MUNCHIE.reach);
+  return clamp(target, -CATCH.reach, CATCH.reach);
 }
 
 /** A stick value that brings the bowl to `target` without overshooting much. */
@@ -157,25 +157,25 @@ export interface CpuBowl {
   target: number;
   nextThink: number;
   /** Seconds left staring into space. */
-  spaced: number;
+  daydream: number;
 }
 
 export function newCpuBowl(): CpuBowl {
-  return { target: 0, nextThink: 0, spaced: 0 };
+  return { target: 0, nextThink: 0, daydream: 0 };
 }
 
 /** The stick a computer player pushes this step. skill: 0 sleepy … 1 sharp. */
 export function cpuStick(c: CpuBowl, b: Bowl, drops: readonly Drop[], t: number, dt: number, skill: number, rng: Rng): number {
-  if (c.spaced > 0) {
-    c.spaced -= dt;
+  if (c.daydream > 0) {
+    c.daydream -= dt;
     return 0;
   }
   if (rng() < (0.04 + (1 - skill) * 0.3) * dt) {
-    c.spaced = 0.5 + rng() * (0.4 + (1 - skill) * 0.8);
+    c.daydream = 0.5 + rng() * (0.4 + (1 - skill) * 0.8);
     return 0;
   }
   if (t >= c.nextThink) {
-    c.target = clamp(cpuAim(b.x, drops, t, skill) + (rng() - 0.5) * (0.35 + (1 - skill) * 0.9), -MUNCHIE.reach, MUNCHIE.reach);
+    c.target = clamp(cpuAim(b.x, drops, t, skill) + (rng() - 0.5) * (0.35 + (1 - skill) * 0.9), -CATCH.reach, CATCH.reach);
     c.nextThink = t + 0.12 + (1 - skill) * 0.45 * rng();
   }
   return steer(b.x, c.target) * (0.5 + 0.5 * skill);

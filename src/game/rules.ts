@@ -224,7 +224,7 @@ export function applyEvent(state: GameState, board: Board, seat: number, event: 
       const mine = p.space;
       placeAt(state, board, seat, other.space);
       placeAt(state, board, other.seat, mine);
-      return { title: 'Wait, where was I?', text: `${p.name} and ${other.name} zone out and wander into each other's spot.`, coins: [], swapWith: other.seat };
+      return { title: 'Whoosh!', text: `A gust of wind blows ${p.name} and ${other.name} into each other's spot.`, coins: [], swapWith: other.seat };
     }
     case 'magpie': {
       const order = standings(state);
